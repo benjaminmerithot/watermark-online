@@ -1,0 +1,6 @@
+.wp-block-button {
+	&__link {
+		@extend %control;
+		@extend %button-primary;
+	}
+}

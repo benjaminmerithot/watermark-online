@@ -1,0 +1,19 @@
+// TODO: add documentation of parameters and return value
+
+@mixin pointer($type: 'fine') {
+	@if $type =='fine' {
+		@media (pointer: fine) {
+			@content;
+		}
+	}
+
+	@else if $type =='coarse' {
+		@media (pointer: coarse) {
+			@content;
+		}
+	}
+
+	@else {
+		@error 'Invalid pointer type `#{$type}`. Valid types are `fine` and `coarse`.';
+	}
+}

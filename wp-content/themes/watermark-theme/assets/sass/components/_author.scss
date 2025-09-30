@@ -1,0 +1,17 @@
+.author {
+	&__list {
+		> * {
+			@include block(rem(60));
+		}
+
+		.pagination {
+			margin-top: rem(90);
+		}
+	}
+
+	&__item {
+		.media-left {
+			margin-right: rem(30);
+		}
+	}
+}

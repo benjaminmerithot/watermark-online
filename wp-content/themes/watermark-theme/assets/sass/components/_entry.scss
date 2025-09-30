@@ -1,0 +1,40 @@
+.entry {
+	&-header {
+		> * {
+			@include block(1rem);
+		}
+	}
+
+	&-title {
+		@include touch {
+			font-size: 1.5rem;
+		}
+	}
+
+	&-content {
+		> * {
+			@include block(2rem);
+		}
+
+		h5,
+		.wp-caption-text {
+			font-family: $family-primary;
+			font-weight: 400;
+			font-size: 0.875rem;
+			color: $grey;
+		}
+
+		.single-post & {
+			margin-bottom: 4rem;
+
+			p:first-of-type {
+				font-size: 2rem;
+
+				@include touch {
+					line-height: 1.3;
+				}
+			}
+		}
+	}
+
+}

@@ -1,0 +1,10 @@
+.logo {
+	img {
+		width: rem(195);
+		max-height: unset;
+
+		@include desktop {
+			// max-height: rem(85);
+		}
+	}
+}

@@ -1,0 +1,45 @@
+$white: #fff;
+$grey: #767676;
+$grey-med: #f5f5f5;
+$black: #000;
+$darker-purple: #300045;
+$dark-purple: #590068;
+$light-purple: #966999;
+$light-blue: #8288C3;
+$sky-blue: #42B4E4;
+$sun-orange: #F99C25;
+$orange: #E28431;
+$red-orange: #F2682A;
+
+$primary: $sun-orange;
+$secondary: $dark-purple;
+
+$text: $black;
+$text-strong: $black;
+$text-link: $black;
+// TODO: update link color
+$link: $secondary;
+
+$border: #c4c4c4;
+$border-teaser: #d9d9d9;
+
+$custom-colors: (
+	'secondary': $secondary,
+	'dark-purple': $dark-purple,
+	'light-purple': $light-purple,
+	'light-blue': $light-blue,
+	'sky-blue': $sky-blue,
+	'orange': $orange,
+	'red-orange': $red-orange,
+	'grey-med': $grey-med,
+);
+
+$color-palette: (
+	'dark-purple': $dark-purple,
+	'light-purple': $light-purple,
+	'light-blue': $light-blue,
+	'sky-blue': $sky-blue,
+	'sun-orange': $sun-orange,
+	'orange': $orange,
+	'red-orange': $red-orange,
+);

@@ -1,0 +1,46 @@
+.meta {
+	@include block(rem(10));
+	color: $grey;
+	font-size: 0.875rem;
+	line-height: 1.1;
+
+	&--category {
+		color: $text;
+		font-weight: 700;
+		text-transform: uppercase;
+
+		a {
+			color: inherit;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&--footer {
+		a {
+			color: inherit;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.entry-header & {
+		margin-bottom: 1rem;
+		font-size: 1.25rem;
+		color: $text;
+	}
+
+	&__posted {
+		.sep::after {
+			content: "•";
+		}
+
+		.author {
+			font-weight: 700;
+		}
+	}
+}

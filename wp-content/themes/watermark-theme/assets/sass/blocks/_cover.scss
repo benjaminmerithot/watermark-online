@@ -1,0 +1,27 @@
+.wp-block-cover {
+
+	@extend %is-full-width;
+
+	.wp-block-columns & {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.aside--events & {
+		@include desktop {
+			min-height: rem(450);
+		}
+	}
+
+	.wp-block-columns {
+		@extend %container;
+		@extend %container-width;
+		gap: 4rem;
+	}
+
+	.wp-block-column:not(:last-child) {
+		@include desktop {
+			border-right: 1px solid $white;
+		}
+	}
+}

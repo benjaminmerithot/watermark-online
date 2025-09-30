@@ -1,0 +1,49 @@
+.page {
+	$block: &;
+
+	&__header {
+		&.has-background-color {
+			position: relative;
+			margin: 0 -2.75rem;
+			padding-top: 1.5rem;
+
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				top: -2.5rem;
+				left: 0;
+				right: 0;
+				@include size(100vw, rem(300));
+				@extend %is-full-width;
+				background-color: var(--wm--c-page-header, var(--wm--c-page-header-default));
+				z-index: -1;
+			}
+
+			.inner {
+				padding: 0 2.75rem 3rem;
+			}
+
+			+ .columns.has-background-white {
+				margin-left: -2.75rem;
+				margin-right: -2.75rem;
+				padding-left: 2rem;
+				padding-right: 2rem;
+			}
+		}
+
+		#{$block}--author & {
+			margin-bottom: rem(60) !important;
+		}
+
+		.media-content {
+			margin-right: 1.25rem;
+		}
+	}
+
+	&__title {
+		#{$block}--author & {
+			font-size: 2.25rem;
+		}
+	}
+}

@@ -1,0 +1,18 @@
+@mixin color-properties($colors: $color-palette, $property: null) {
+	@if type-of($colors) !='map' {
+		@error 'The $colors argument must be a map.';
+	}
+
+	@each $name,
+	$color in $colors {
+		@if $property {
+			&--#{$name} {
+				#{$property}: #{$color};
+			}
+		}
+
+		@else {
+			--wm--c-#{$name}: #{$color};
+		}
+	}
+}

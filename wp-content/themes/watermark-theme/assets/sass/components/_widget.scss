@@ -1,0 +1,19 @@
+.widget {
+
+	h3 {
+		line-height: 1.1;
+
+		a {
+			color: inherit;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	ul {
+		@include list-reset;
+	}
+
+}

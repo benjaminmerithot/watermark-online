@@ -1,0 +1,37 @@
+.visually-hidden {
+	@include visually-hidden;
+}
+
+.has-background-black {
+	color: $white;
+}
+
+%is-full-width {
+	margin-left: $fullwidth;
+	margin-right: $fullwidth;
+}
+
+.is-full-width {
+	@extend %is-full-width;
+}
+
+.is-space-between {
+	justify-content: space-between;
+}
+
+.is-layout-flex {
+	@include touch {
+		flex-wrap: wrap !important;
+
+		&.columns {
+			.column {
+
+				flex-basis: 100%;
+			}
+		}
+	}
+}
+
+.has-gap-large {
+	margin-bottom: rem(72);
+}

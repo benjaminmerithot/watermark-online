@@ -1,0 +1,175 @@
+.menu {
+	$block: &;
+	$main: #{&}--main;
+	$mobile: #{&}--mobile;
+
+	display: flex;
+	margin: 0;
+
+	&--header {
+		justify-content: flex-end;
+		gap: 1.25rem;
+		margin-top: 2rem;
+
+		@include desktop {
+			font-size: 0.875rem;
+		}
+
+		&#{$mobile} {
+			padding-top: 2rem;
+			border-top: 1px solid $border;
+		}
+	}
+
+	&--main {
+		gap: 1.25rem;
+		font-size: 1.125rem;
+
+		@include desktop {
+			gap: 3rem;
+		}
+
+		a {
+			color: $text-link;
+		}
+	}
+
+	&--header,
+	&--main {
+		font-weight: 700;
+	}
+
+	&--footer,
+	&--mobile {
+		flex-direction: column;
+	}
+
+	&-item {
+
+		#{$main} &,
+		#{$mobile} & {
+			&.menu-item-has-children {
+				position: relative;
+
+				&:after {
+					content: '';
+					position: absolute;
+					width: 0.5rem;
+					height: 0.5rem;
+					border-bottom: 2px solid $text-link;
+					border-right: 2px solid $text-link;
+					transform: translateY(-50%) rotate(45deg);
+				}
+			}
+		}
+
+		#{$main}:not(#{$mobile}) & {
+			&.menu-item-has-children {
+
+				&::after {
+					top: 50%;
+					right: -1rem;
+				}
+
+				&:hover {
+					.sub-menu {
+						display: block;
+						opacity: 1;
+						visibility: visible;
+					}
+
+					&:after {
+						transform: translateY(-20%) rotate(225deg);
+					}
+				}
+			}
+
+			.sub-menu {
+				position: absolute;
+				top: 100%;
+				left: -1.75rem;
+				display: none;
+				padding: 1.75rem;
+				min-width: rem(200);
+				background-color: $white;
+				box-shadow: 0 0.5rem 1rem rgba($black, 0.1);
+				font-weight: 500;
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+
+				li {
+					&:not(:last-child) {
+						margin-bottom: 0.875rem;
+					}
+				}
+			}
+
+		}
+
+		#{$mobile} & {
+			&.menu-item-has-children {
+
+				> a {
+					display: flex;
+				}
+
+				&:after {
+					top: 0.75rem;
+					right: 0.25rem;
+				}
+
+				.sub-menu {
+					display: none;
+					margin-top: 1.25rem;
+
+					li {
+						padding-bottom: 1.25rem;
+						padding-left: 1.25rem;
+
+						font-weight: 500;
+					}
+				}
+
+				&.is-active {
+					&::after {
+						transform: translateY(-50%) rotate(225deg);
+					}
+
+					.sub-menu {
+						display: block;
+					}
+				}
+			}
+		}
+
+		#{$block}--footer & {
+
+			margin-bottom: 1.5rem;
+
+			> a {
+				color: $white;
+				font-size: 0.875rem;
+				font-weight: 700;
+				text-transform: uppercase;
+			}
+
+			.sub-menu {
+				margin-top: 0.5rem;
+			}
+
+			.sub-menu > li > a {
+				color: $primary;
+				font-size: rem(13);
+				font-weight: 500;
+				text-transform: unset;
+			}
+
+			.sub-menu > li {
+				margin-bottom: 0.5rem;
+			}
+
+		}
+	}
+
+}

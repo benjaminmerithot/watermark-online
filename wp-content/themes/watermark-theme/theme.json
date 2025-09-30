@@ -1,0 +1,121 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.0/theme.json",
+  "version": 2,
+  "settings": {
+    "color": {
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "defaultDuotone": false,
+      "custom": false,
+      "customDuotone": false,
+      "customGradient": false,
+      "duotone": [],
+      "gradients": [],
+      "link": false,
+      "palette": [
+        {
+          "slug": "primary",
+          "color": "#f99c25",
+          "name": "Sun Orange"
+        },
+        {
+          "slug": "secondary",
+          "color": "#590068",
+          "name": "Dark Purple"
+        },
+        {
+          "slug": "purple-darker",
+          "color": "#300045",
+          "name": "Darker Purple"
+        },
+        {
+          "slug": "purple-light",
+          "color": "#966999",
+          "name": "Light Purple"
+        },
+        {
+          "slug": "blue-light",
+          "color": "#8288c3",
+          "name": "Light Blue"
+        },
+        {
+          "slug": "sky-blue",
+          "color": "#42b4e4",
+          "name": "Sky Blue"
+        },
+        {
+          "slug": "orange",
+          "color": "#e28431",
+          "name": "Orange"
+        },
+        {
+          "slug": "red-orange",
+          "color": "#f2682a",
+          "name": "Red Orange"
+        },
+        {
+          "slug": "white",
+          "color": "#fff",
+          "name": "White"
+        },
+        {
+          "slug": "black",
+          "color": "#000",
+          "name": "Black"
+        }
+      ]
+    },
+    "custom": {},
+    "layout": {
+      "contentSize": "800px",
+      "wideSize": "1200px"
+    },
+    "spacing": {
+      "margin": false,
+      "padding": false,
+      "units": []
+    },
+    "typography": {
+      "customFontSize": false,
+      "lineHeight": false,
+      "dropCap": false,
+      "fontSizes": []
+    },
+    "blocks": {
+      "core/button": {
+        "color": {
+          "palette": []
+        }
+      }
+    }
+  },
+  "styles": {
+    "color": {},
+    "elements": {
+      "h1": {},
+      "h2": {},
+      "h3": {},
+      "h4": {},
+      "h5": {},
+      "h6": {},
+      "link": {}
+    },
+    "typography": {},
+    "blocks": {
+      "core/button": {
+        "border": {
+          "radius": "0"
+        },
+        "color": {
+          "background": "var(--wp--preset--color--primary)",
+          "text": "var(--wp--preset--color--black)"
+        },
+        "typography": {
+          "fontStyle": "normal",
+          "fontWeight": "700",
+          "textTransform": "uppercase"
+        }
+      }
+    }
+  }
+}

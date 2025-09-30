@@ -1,0 +1,12 @@
+{
+	"name": "wm-specialty-pub",
+	"title": "Specialty Publications",
+	"description": "Specialty Publications Block",
+	"category": "theme",
+	"icon": "admin-post",
+	"keywords": ["specialty", "publications", "digital"],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "specialty-pub.php"
+	}
+}

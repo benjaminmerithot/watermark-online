@@ -1,0 +1,76 @@
+.footer {
+	&__site {
+		padding: 2.5rem 0 2.75rem;
+	}
+
+	&__lower {
+
+		.level {
+			padding-top: 1.5rem;
+			border-top: 1px solid #2c2c2c;
+
+			@include touch {
+				> * {
+					@include block(1.25rem);
+				}
+			}
+		}
+
+		.is-layout-flex {
+			@include touch {
+				justify-content: center;
+				text-align: center;
+			}
+		}
+	}
+
+	&__copyright {
+		font-weight: 400;
+
+		@include touch {
+			font-size: 0.9375rem;
+			text-align: center;
+		}
+
+		@include desktop {
+			font-weight: 500;
+		}
+	}
+
+	&__subscribe {
+		gap: 1rem;
+
+		@include desktop {
+			gap: 5rem;
+		}
+
+		h2 {
+			margin-bottom: 0;
+			font-size: 1.25rem;
+		}
+
+		p {
+			margin: 0;
+		}
+
+		font-size: rem(15);
+		font-weight: 500;
+	}
+
+	&__brand {
+		@include touch {
+			display: flex;
+			justify-content: center;
+
+			.logo {
+				display: flex;
+				justify-content: center;
+
+				img {
+					width: 50%;
+					// max-height: (rem(75));
+				}
+			}
+		}
+	}
+}

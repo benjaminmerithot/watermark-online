@@ -1,0 +1,27 @@
+.aside {
+	&--header {
+		margin-top: 1rem;
+	}
+
+	&--footer {
+		&:not(.aside--events) {
+			margin-bottom: 3rem;
+		}
+	}
+
+	&--sidebar {
+		> * {
+			@include block(2rem);
+		}
+
+		h2 {
+			font-size: 1.5rem;
+		}
+	}
+
+	&--events {
+		> * {
+			@include block(3rem);
+		}
+	}
+}

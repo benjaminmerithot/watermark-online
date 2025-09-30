@@ -1,0 +1,12 @@
+{
+	"name": "wm-posts-group",
+	"title": "Latest Posts Group",
+	"description": "Latest Posts Group Block",
+	"category": "theme",
+	"icon": "admin-post",
+	"keywords": [ "latest", "posts", "group" ],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "posts-group.php"
+	}
+}

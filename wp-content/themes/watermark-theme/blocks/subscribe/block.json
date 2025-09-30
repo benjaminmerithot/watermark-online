@@ -1,0 +1,12 @@
+{
+	"name": "wm-subscribe",
+	"title": "Subscribe Block",
+	"description": "Subscription form block",
+	"category": "theme",
+	"icon": "admin-post",
+	"keywords": [ "form", "subscribe", "subscription" ],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "subscribe.php"
+	}
+}

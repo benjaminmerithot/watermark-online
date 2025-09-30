@@ -1,0 +1,198 @@
+<?php
+/**
+ * WP Theme constants and setup functions
+ *
+ * @package WatermarkTheme
+ */
+
+/**
+ * Theme version.
+ * @since 0.1.0
+ */
+define( 'WATERMARK_THEME_VERSION', wp_get_theme()->get( 'Version' ) );
+
+
+if ( ! function_exists( 'watermark_theme_setup' ) ) :
+
+	function watermark_theme_setup() {
+
+		add_editor_style( '/style-editor.css' );
+
+		// Let WordPress manage the document title.
+		add_theme_support( 'title-tag' );
+		add_theme_support( 'post-thumbnails' );
+
+		// Add additional image sizes.
+		add_image_size( 'full-width', 1920, 1080, false );
+		add_image_size( 'background', 1170, 732, true );
+		add_image_size( 'article', 872, 490, true );
+		add_image_size( 'teaser', 230, 120, true );
+		add_image_size( 'teaser-small', 80, 80, false );
+		add_image_size( 'teaser-medium', 305, 160, true );
+		add_image_size( 'teaser-large-rect', 594, 310, true );
+		add_image_size( 'teaser-large', 536, 350, true );
+		add_image_size( 'teaser-square', 285, 285, true );
+
+		// This theme uses wp_nav_menu() in multiple locations.
+		register_nav_menus( array(
+			'primary' 			=> esc_html__( 'Primary Menu', 'watermark-theme' ),
+			'header-top' 		=> esc_html__( 'Header Top Menu', 'watermark-theme' ),
+			'footer-column-1' 	=> esc_html__( 'Footer Column 1 Menu', 'watermark-theme' ),
+			'footer-column-2' 	=> esc_html__( 'Footer Column 2 Menu', 'watermark-theme' ),
+			'footer-column-3' 	=> esc_html__( 'Footer Column 3 Menu', 'watermark-theme' ),
+			'footer-column-4' 	=> esc_html__( 'Footer Column 4 Menu', 'watermark-theme' ),
+		) );
+
+		add_theme_support( 'html5', array(
+			'search-form',
+			'gallery',
+			'caption',
+		) );
+
+		// Add theme support for selective refresh for widgets.
+		add_theme_support( 'customize-selective-refresh-widgets' );
+	}
+endif;
+add_action( 'after_setup_theme', 'watermark_theme_setup' );
+
+/**
+ * Disable block patterns from the WP pattern directory.
+ */
+add_filter( 'should_load_remote_block_patterns', '__return_false' );
+
+/**
+ * Register widget area.
+ *
+ * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
+ */
+function watermark_theme_widgets_init() {
+
+	// Define sidebars.
+	$sidebars = array(
+		'sidebar-1' => array(
+			'name'          => esc_html__( 'Sidebar', 'watermark-theme' ),
+			'id'            => 'sidebar-1',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'category-sidebar' => array(
+			'name'          => esc_html__( 'Category Sidebar', 'watermark-theme' ),
+			'id'            => 'category-sidebar',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'pub-specialty' => array(
+			'name'          => esc_html__( 'Specialty Publications', 'watermark-theme' ),
+			'id'            => 'pub-specialty',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'leaderboard-header' => array(
+			'name'          => esc_html__( 'Leaderboard Header', 'watermark-theme' ),
+			'id'            => 'leaderboard-header',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'leaderboard-footer' => array(
+			'name'          => esc_html__( 'Leaderboard Footer', 'watermark-theme' ),
+			'id'            => 'leaderboard-footer',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'leaderboard-pub' => array(
+			'name'          => esc_html__( 'Leaderboard Publication', 'watermark-theme' ),
+			'id'            => 'leaderboard-pub',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'events-footer' => array(
+			'name'          => esc_html__( 'Events Footer', 'watermark-theme' ),
+			'id'            => 'events-footer',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'footer' => array(
+			'name'          => esc_html__( 'Footer', 'watermark-theme' ),
+			'id'            => 'footer',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'leaderboard-header-es' => array(
+			'name'          => esc_html__( 'Leaderboard Header - Spanish', 'watermark-theme' ),
+			'id'            => 'leaderboard-header-es',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'leaderboard-footer-es' => array(
+			'name'          => esc_html__( 'Leaderboard Footer - Spanish', 'watermark-theme' ),
+			'id'            => 'leaderboard-footer-es',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+		'sidebar-es' => array(
+			'name'          => esc_html__( 'Sidebar - Spanish', 'watermark-theme' ),
+			'id'            => 'sidebar-es',
+			'description'   => esc_html__( 'Add widgets here.', 'watermark-theme' ),
+		),
+	);
+
+	// Loop through each sidebar and register it.
+	foreach ( $sidebars as $sidebar ) {
+		register_sidebar(
+			array(
+				'name'          => $sidebar['name'],
+				'id'            => $sidebar['id'],
+				'description'   => $sidebar['description'],
+				'before_widget' => '<section id="%1$s" class="widget %2$s">',
+				'after_widget'  => '</section>',
+				'before_title'  => '<h2 class="widget-title">',
+				'after_title'   => '</h2>',
+			)
+		);
+	}
+}
+add_action( 'widgets_init', 'watermark_theme_widgets_init' );
+
+/**
+ * Enqueue scripts and styles.
+ */
+function watermark_theme_scripts() {
+	/**
+	 * If WP is in script debug, or we pass ?script_debug in a URL - set debug to true.
+	 */
+	$debug = ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) || ( isset( $_GET['script_debug'] ) ) ? true : false; // WPCS: CSRF OK.
+
+	$suffix = ( true === $debug ) ? '' : '.min';
+
+	// Enqueue Typekit Fonts.
+	wp_enqueue_style( 'watermark-fonts', '//use.typekit.net/hnz0skw.css', [] );
+
+	// Enqueue main stylesheet.
+	wp_enqueue_style( 'watermark-style', get_stylesheet_directory_uri() . '/style' . $suffix . '.css', [], WATERMARK_THEME_VERSION );
+	wp_enqueue_style( 'slick', get_stylesheet_directory_uri() . '/assets/css/slick.css', [], WATERMARK_THEME_VERSION );
+
+	// Enqueue main JS file.
+	wp_enqueue_script( 'watermark-script', get_template_directory_uri() . '/assets/scripts/script' . $suffix . '.js', ['jquery'], WATERMARK_THEME_VERSION, true );
+	wp_enqueue_script( 'slick', get_template_directory_uri() . '/assets/scripts/slick.min.js', ['jquery'], WATERMARK_THEME_VERSION, true );
+}
+add_action( 'wp_enqueue_scripts', 'watermark_theme_scripts' );
+
+
+if ( function_exists( 'acf_add_options_page' ) ) {
+	acf_add_options_page();
+}
+
+/**
+ * Register blocks.
+ */
+function watermark_register_acf_blocks() {
+	register_block_type( __DIR__ . '/blocks/ad-script' );
+	register_block_type( __DIR__ . '/blocks/category-group' );
+	register_block_type( __DIR__ . '/blocks/featured-category' );
+	register_block_type( __DIR__ . '/blocks/latest-posts' );
+	register_block_type( __DIR__ . '/blocks/posts-group' );
+	register_block_type( __DIR__ . '/blocks/specialty-pub' );
+}
+add_action( 'init', 'watermark_register_acf_blocks' );
+
+function watermark_distribution_shortcode() {
+	return '<p class="my-5 has-text-centered"><a href="/distribution-map/"><span class="is-uppercase" style="font-size: 0.875rem; line-height: 1.2;">Looking for a print copy?</span><br><span>Click here to find a distribution site nearest you!</span></a></p>';
+}
+add_shortcode( 'distribution', 'watermark_distribution_shortcode' );
+
+/**
+ * Theme template tags.
+ */
+require get_template_directory() . '/inc/template-tags.php';
+
+add_filter('tec_events_custom_tables_v1_db_transactions_supported', function() { return false; });

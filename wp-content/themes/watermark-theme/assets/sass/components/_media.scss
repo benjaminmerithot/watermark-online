@@ -1,0 +1,7 @@
+.media {
+	$block: &;
+
+	& + & {
+		border: none;
+	}
+}

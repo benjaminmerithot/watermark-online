@@ -1,0 +1,12 @@
+{
+	"name": "wm-latest-posts",
+	"title": "Latest Posts List",
+	"description": "Displays the latest posts",
+	"category": "theme",
+	"icon": "admin-post",
+	"keywords": ["latest", "posts", "articles"],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "latest-posts.php"
+	}
+}

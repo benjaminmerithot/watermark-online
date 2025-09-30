@@ -1,0 +1,11 @@
+.wp-block-social-link {
+	&:hover {
+		color: $primary !important;
+	}
+}
+
+.wp-block-social-links {
+	&.has-background {
+		padding: 0;
+	}
+}

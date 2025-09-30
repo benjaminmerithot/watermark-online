@@ -1,0 +1,12 @@
+{
+	"name": "wm-category-group",
+	"title": "Category Group",
+	"description": "Category Group Block",
+	"category": "theme",
+	"icon": "admin-post",
+	"keywords": [ "category", "group" ],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "category-group.php"
+	}
+}

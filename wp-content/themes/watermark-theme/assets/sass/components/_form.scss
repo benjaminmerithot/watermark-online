@@ -1,0 +1,16 @@
+%label {
+	display: inline-block;
+	margin-bottom: 1rem;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: $text;
+}
+
+%form-input {
+	@extend %control;
+	border-color: $border;
+}
+
+%form-submit {
+	@extend %button-primary;
+}

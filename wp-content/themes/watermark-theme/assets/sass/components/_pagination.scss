@@ -1,0 +1,21 @@
+.pagination {
+	justify-content: center;
+	gap: .5rem;
+	color: $text;
+	font-size: 1.25rem;
+	font-weight: 500;
+
+	> * {
+		display: inline-flex;
+		padding: 0.5rem 1rem;
+	}
+
+	a {
+		color: $text;
+	}
+
+	a:hover,
+	.current {
+		background: $primary;
+	}
+}

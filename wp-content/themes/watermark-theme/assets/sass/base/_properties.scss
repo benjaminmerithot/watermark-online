@@ -1,0 +1,14 @@
+:root {
+	@include color-properties($color-palette);
+	--wm--c-primary: #{$primary};
+	--wm--c-secondary: #{$secondary};
+	--wm--c-text: #{$text};
+	--wm--c-link: #{$link};
+	--wm--c-white: #{$white};
+	--wm--c-page-header-default: var(--wm--c-secondary);
+	--wm--c-category-default: var(--wm--c-secondary);
+	--wm--font-family-primary: #{$family-primary};
+	--wm--font-family-secondary: #{$family-secondary};
+	--wm--submit-bg-color-default: #{$orange};
+	--wm--submit-bg-image-default: url('./assets/images/arrow-right-long.svg');
+}

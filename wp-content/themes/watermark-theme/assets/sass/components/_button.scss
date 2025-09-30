@@ -1,0 +1,47 @@
+@use 'sass:color';
+
+%button-primary {
+	// TODO: Change to CSS variables for the colors
+	height: rem(50);
+	background-color: $primary;
+	color: $text-link;
+	font-weight: 700;
+	border-color: transparent;
+	text-transform: uppercase;
+
+	&:hover {
+		background-color: color.scale($primary, $blackness: 5%);
+		color: $text-link;
+		border-color: transparent;
+	}
+}
+
+.button {
+	@extend %button-primary;
+
+	&--white {
+		background-color: $white;
+
+		&:hover {
+			background-color: $primary;
+		}
+	}
+
+	&--wide {
+		min-width: rem(220);
+	}
+
+	&--icon {
+		padding: 0.5rem;
+		@include size(rem(40));
+		background: transparent;
+
+		.icon {
+			margin: 0 !important;
+		}
+
+		&:hover {
+			background: transparent;
+		}
+	}
+}

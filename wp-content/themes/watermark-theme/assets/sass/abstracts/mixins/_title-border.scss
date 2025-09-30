@@ -1,0 +1,22 @@
+@mixin title-border {
+	display: table;
+	white-space: nowrap;
+
+	&:before,
+	&:after {
+		content: '';
+		position: relative;
+		display: table-cell;
+		top: 0.5em;
+		width: 45%;
+		border-top: 1px solid $border;
+	}
+
+	&:before {
+		right: 5%;
+	}
+
+	&:after {
+		left: 5%;
+	}
+}

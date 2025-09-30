@@ -1,0 +1,33 @@
+.ad-block {
+
+	&--leaderboard {
+		margin-left: auto;
+		margin-right: auto;
+
+		@include mobile {
+			height: rem(50);
+		}
+
+		@include touch {
+			width: 100%;
+
+			iframe {
+				@include size(100% !important);
+			}
+		}
+
+		@include tablet-only {
+			height: rem(90);
+		}
+
+		@include desktop {
+			max-width: rem(980);
+		}
+	}
+
+	&--sidebar {
+		margin-left: auto !important;
+		margin-right: auto !important;
+		text-align: center;
+	}
+}

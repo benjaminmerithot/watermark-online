@@ -1,0 +1,18 @@
+/** !
+ * Theme Name:  Watermark Theme
+ * Theme URI:   https://merithot.com
+ * Description: Custom theme for Watermark Online.
+ * Author:      Merithot
+ * Author URI:  https://merithot.com
+ * Version:     0.1.0
+ * Tags:
+ * Text Domain: watermark-theme
+ */
+
+@import 'vendors/sanitize/sanitize';
+@import 'abstracts/index';
+@import 'base/index';
+@import 'layout/index';
+@import 'components/index';
+@import 'blocks/index';
+@import 'plugins/index';

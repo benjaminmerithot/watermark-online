@@ -1,0 +1,10 @@
+.subscribe {
+	padding: 1.5rem 1.125rem;
+	font-size: 1rem;
+	font-weight: 500;
+
+	&.has-purple-darker-background-color {
+		--wm--submit-bg-color: #{$dark-purple};
+		--wm--submit-bg-image: url('./assets/images/arrow-right-long-white.svg');
+	}
+}

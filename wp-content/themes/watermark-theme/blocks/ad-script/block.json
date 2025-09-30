@@ -1,0 +1,12 @@
+{
+	"name": "ad-script",
+	"title": "Ad Script",
+	"description": "Ad Script Block",
+	"category": "theme",
+	"icon": "embed-generic",
+	"keywords": [ "ad", "script" ],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "ad-script.php"
+	}
+}

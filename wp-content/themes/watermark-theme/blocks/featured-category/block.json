@@ -1,0 +1,12 @@
+{
+	"name": "wm-featured-category",
+	"title": "Featured Category Group",
+	"description": "Featured Category Group Block",
+	"category": "theme",
+	"icon": "admin-post",
+	"keywords": [ "featured", "category", "group" ],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "featured-category.php"
+	}
+}

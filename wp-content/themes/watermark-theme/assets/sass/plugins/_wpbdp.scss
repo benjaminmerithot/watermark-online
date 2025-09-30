@@ -1,0 +1,197 @@
+// Business Directory Plugin
+
+%directory-link {
+	a {
+		color: $text-link;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.wpbdp_listing {
+	margin: 4rem 0;
+
+	h1 {
+		@include touch {
+			font-size: 1.5rem;
+		}
+	}
+
+	.field-value {
+
+		.field-label {
+			margin: 0;
+			padding: 0;
+			font-weight: 700;
+			color: $text;
+			text-transform: uppercase;
+		}
+	}
+
+	.wpbdp-grid {
+		row-gap: 2.5rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.wpbdp-form-field {
+		margin: 0;
+
+		label {
+			@extend %label;
+		}
+
+		input[type="text"],
+		input[type="email"],
+		input[type="url"],
+		input[type="tel"],
+		input[type="number"],
+		input[type="password"],
+		textarea,
+		select {
+			@extend %form-input;
+		}
+
+		textarea {
+			height: rem(150);
+		}
+	}
+}
+
+.business-directory {
+
+	&.wpbdp-with-button-styles {
+
+		.wpbdp-button,
+		.wpbdp-main-box input[type="submit"] {
+			@extend %control;
+			@extend %button-primary;
+			justify-content: center;
+		}
+
+		.wpbdp-button {
+			&.wpbdp-show-on-mobile {
+				@include desktop {
+					display: none;
+				}
+			}
+		}
+
+		.wpbdp-main-box {
+			margin: 0 0 1.25rem;
+
+			.box-col {
+				input {
+					@extend %form-input;
+				}
+			}
+
+			.submit-btn {
+				width: rem(184);
+			}
+
+			input[type="submit"] {
+				height: 2.5rem;
+			}
+
+			.main-fields {
+				padding: 0.5rem;
+				background-color: $grey-med;
+			}
+
+			.box-row:not(.separator) {
+				@include block(1rem);
+			}
+
+			.search-fields {
+				.box-row {
+					gap: 1rem;
+				}
+			}
+		}
+
+		.submit {
+			min-width: rem(226);
+		}
+	}
+
+	.wpbdp-listing-excerpt {
+		padding: rem(40) rem(50) rem(50);
+		border: 1px solid $primary;
+
+		h2 {
+			font-size: 1.5rem;
+			font-family: $family-primary;
+			color: $text;
+
+			a {
+				color: inherit;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+
+	.wpbdp-categories {
+		padding: .75rem .5rem;
+		list-style: none;
+		font-size: 1rem;
+		color: $text;
+		line-height: 1.2;
+		border: 1px solid $border;
+
+		a {
+			color: inherit;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.wpbdp-listing {
+
+		.wpbdp-field {
+			font-size: 1rem;
+
+			@extend %directory-link;
+		}
+	}
+
+	.listing-actions {
+		display: flex;
+		gap: .5rem;
+
+		&.cf {
+
+			&:before,
+			&:after {
+				display: none;
+			}
+		}
+
+		.button,
+		> span {
+			margin: 0;
+		}
+	}
+
+	.wpbdp-pagination {
+		@extend %directory-link;
+	}
+
+	.wpbdp-goback {
+		a {
+			@extend %control;
+			@extend %button-primary;
+		}
+	}
+
+	.wpbdp-page > * {
+		@include block(3rem);
+	}
+}

@@ -1,0 +1,112 @@
+.page {
+
+	.gform_wrapper {
+		&.gravity-theme {
+			.gform_fields {
+				row-gap: 2rem;
+			}
+
+			.gfield_label {
+				@extend %label;
+			}
+
+			input[type="text"],
+			input[type="email"],
+			input[type="url"],
+			input[type="tel"],
+			input[type="number"],
+			input[type="password"],
+			textarea,
+			select {
+				@extend %form-input;
+			}
+
+			.gfield_required {
+				color: $primary;
+
+				.gfield_required_text {
+					font-weight: 600;
+				}
+			}
+		}
+	}
+}
+
+.gform_wrapper.gravity-theme {
+	.entry-content & {
+
+		.gform_footer {
+			margin: 2rem 0;
+			padding: 0;
+
+			.button {
+				margin: 0;
+				min-width: rem(226);
+			}
+		}
+	}
+
+	.subscribe &,
+	.footer__subscribe & {
+		.gform_fields {
+			display: flex;
+			gap: 0;
+		}
+
+		.gform_footer {
+			margin: 0;
+			padding: 0;
+		}
+
+		.gfield--type-submit {
+			justify-content: flex-end;
+			flex: 0 0 auto;
+		}
+
+		.gfield--type-email,
+		.gfield--type-text {
+			flex: 1 0 auto;
+		}
+	}
+
+	.subscribe & {
+		width: 100%;
+
+		input[type="text"],
+		input[type="email"] {
+			height: rem(45);
+		}
+
+		input[type="submit"] {
+			@include size(rem(45));
+			text-indent: -9999px;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: 50%;
+			background-color: var(--wm--submit-bg-color, var(--wm--submit-bg-color-default));
+			background-image: var(--wm--submit-bg-image, var(--wm--submit-bg-image-default));
+		}
+	}
+
+	.footer__subscribe & {
+
+		input[type="text"],
+		input[type="email"],
+		input[type="submit"] {
+			height: 3rem;
+		}
+
+		input[type="text"],
+		input[type="email"] {
+			min-width: rem(220);
+			background: transparent;
+			color: $primary;
+			border: 1px solid $primary;
+		}
+
+		input[type="submit"] {
+			min-width: rem(110);
+			text-transform: none;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+.tag {
+	&__links {
+		font-weight: 700;
+		text-transform: uppercase;
+
+		a {
+			font-size: 0.875rem;
+			color: $grey;
+
+			&:hover {
+				color: $secondary;
+			}
+		}
+	}
+
+	&__header {
+		font-size: 1rem;
+	}
+}

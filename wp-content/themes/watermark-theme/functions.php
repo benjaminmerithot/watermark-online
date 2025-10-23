@@ -196,3 +196,187 @@ add_shortcode( 'distribution', 'watermark_distribution_shortcode' );
 require get_template_directory() . '/inc/template-tags.php';
 
 add_filter('tec_events_custom_tables_v1_db_transactions_supported', function() { return false; });
+
+/**
+ * Register Contributors custom post type.
+ */
+function watermark_register_contributors_post_type() {
+	$labels = array(
+		'name'                  => _x( 'Contributors', 'Post type general name', 'watermark-theme' ),
+		'singular_name'         => _x( 'Contributor', 'Post type singular name', 'watermark-theme' ),
+		'menu_name'             => _x( 'Contributors', 'Admin Menu text', 'watermark-theme' ),
+		'name_admin_bar'        => _x( 'Contributor', 'Add New on Toolbar', 'watermark-theme' ),
+		'add_new'               => __( 'Add New', 'watermark-theme' ),
+		'add_new_item'          => __( 'Add New Contributor', 'watermark-theme' ),
+		'new_item'              => __( 'New Contributor', 'watermark-theme' ),
+		'edit_item'             => __( 'Edit Contributor', 'watermark-theme' ),
+		'view_item'             => __( 'View Contributor', 'watermark-theme' ),
+		'all_items'             => __( 'All Contributors', 'watermark-theme' ),
+		'search_items'          => __( 'Search Contributors', 'watermark-theme' ),
+		'parent_item_colon'     => __( 'Parent Contributors:', 'watermark-theme' ),
+		'not_found'             => __( 'No contributors found.', 'watermark-theme' ),
+		'not_found_in_trash'    => __( 'No contributors found in Trash.', 'watermark-theme' ),
+		'featured_image'        => _x( 'Contributor Photo', 'Overrides the "Featured Image" phrase', 'watermark-theme' ),
+		'set_featured_image'    => _x( 'Set contributor photo', 'Overrides the "Set featured image" phrase', 'watermark-theme' ),
+		'remove_featured_image' => _x( 'Remove contributor photo', 'Overrides the "Remove featured image" phrase', 'watermark-theme' ),
+		'use_featured_image'    => _x( 'Use as contributor photo', 'Overrides the "Use as featured image" phrase', 'watermark-theme' ),
+		'archives'              => _x( 'Contributor archives', 'The post type archive label', 'watermark-theme' ),
+		'insert_into_item'      => _x( 'Insert into contributor', 'Overrides the "Insert into post" phrase', 'watermark-theme' ),
+		'uploaded_to_this_item' => _x( 'Uploaded to this contributor', 'Overrides the "Uploaded to this post" phrase', 'watermark-theme' ),
+		'filter_items_list'     => _x( 'Filter contributors list', 'Screen reader text for the filter links', 'watermark-theme' ),
+		'items_list_navigation' => _x( 'Contributors list navigation', 'Screen reader text for the pagination', 'watermark-theme' ),
+		'items_list'            => _x( 'Contributors list', 'Screen reader text for the items list', 'watermark-theme' ),
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'contributor' ),
+		'capability_type'    => 'post',
+		'has_archive'        => true,
+		'hierarchical'       => false,
+		'menu_position'      => 20,
+		'menu_icon'          => 'dashicons-groups',
+		'supports'           => array( 'title', 'editor', 'thumbnail' ),
+		'show_in_rest'       => true,
+	);
+
+	register_post_type( 'contributor', $args );
+}
+add_action( 'init', 'watermark_register_contributors_post_type' );
+
+/**
+ * Add meta box for selecting contributor on posts.
+ */
+function watermark_add_contributor_meta_box() {
+	add_meta_box(
+		'watermark_contributor_meta_box',
+		__( 'Article Contributor', 'watermark-theme' ),
+		'watermark_render_contributor_meta_box',
+		'post',
+		'side',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'watermark_add_contributor_meta_box' );
+
+/**
+ * Render the contributor meta box.
+ */
+function watermark_render_contributor_meta_box( $post ) {
+	wp_nonce_field( 'watermark_contributor_meta_box', 'watermark_contributor_meta_box_nonce' );
+
+	$selected_contributor = get_post_meta( $post->ID, '_watermark_contributor_id', true );
+
+	$contributors = get_posts( array(
+		'post_type'      => 'contributor',
+		'posts_per_page' => -1,
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+	) );
+
+	echo '<p><label for="watermark_contributor_select">' . __( 'Override author with a contributor:', 'watermark-theme' ) . '</label></p>';
+	echo '<select id="watermark_contributor_select" name="watermark_contributor_id" style="width: 100%;">';
+	echo '<option value="">' . __( '-- Use Post Author --', 'watermark-theme' ) . '</option>';
+
+	foreach ( $contributors as $contributor ) {
+		printf(
+			'<option value="%s" %s>%s</option>',
+			esc_attr( $contributor->ID ),
+			selected( $selected_contributor, $contributor->ID, false ),
+			esc_html( $contributor->post_title )
+		);
+	}
+
+	echo '</select>';
+}
+
+/**
+ * Save the contributor meta box data.
+ */
+function watermark_save_contributor_meta_box( $post_id ) {
+	// Check if our nonce is set and verify it.
+	if ( ! isset( $_POST['watermark_contributor_meta_box_nonce'] ) ) {
+		return;
+	}
+	if ( ! wp_verify_nonce( $_POST['watermark_contributor_meta_box_nonce'], 'watermark_contributor_meta_box' ) ) {
+		return;
+	}
+
+	// If this is an autosave, don't do anything.
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	// Check the user's permissions.
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	// Save the contributor ID.
+	if ( isset( $_POST['watermark_contributor_id'] ) ) {
+		$contributor_id = sanitize_text_field( $_POST['watermark_contributor_id'] );
+		if ( ! empty( $contributor_id ) ) {
+			update_post_meta( $post_id, '_watermark_contributor_id', $contributor_id );
+		} else {
+			delete_post_meta( $post_id, '_watermark_contributor_id' );
+		}
+	}
+}
+add_action( 'save_post', 'watermark_save_contributor_meta_box' );
+
+/**
+ * Get the contributor for a post.
+ *
+ * @param int $post_id Post ID. Default is current post.
+ * @return WP_Post|false Contributor post object or false if none set.
+ */
+function watermark_get_post_contributor( $post_id = null ) {
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	$contributor_id = get_post_meta( $post_id, '_watermark_contributor_id', true );
+
+	if ( $contributor_id ) {
+		return get_post( $contributor_id );
+	}
+
+	return false;
+}
+
+/**
+ * Display the contributor or author name.
+ *
+ * @param int $post_id Post ID. Default is current post.
+ * @return string Contributor or author name.
+ */
+function watermark_get_author_name( $post_id = null ) {
+	$contributor = watermark_get_post_contributor( $post_id );
+
+	if ( $contributor ) {
+		return $contributor->post_title;
+	}
+
+	return get_the_author();
+}
+
+/**
+ * Display the contributor or author link.
+ *
+ * @param int $post_id Post ID. Default is current post.
+ * @return string Contributor or author link.
+ */
+function watermark_get_author_link( $post_id = null ) {
+	$contributor = watermark_get_post_contributor( $post_id );
+
+	if ( $contributor ) {
+		return get_permalink( $contributor->ID );
+	}
+
+	return get_author_posts_url( get_the_author_meta( 'ID' ) );
+}

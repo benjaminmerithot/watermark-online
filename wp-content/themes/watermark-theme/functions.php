@@ -408,3 +408,133 @@ function watermark_get_author_link( $post_id = null ) {
 
 	return get_author_posts_url( get_the_author_meta( 'ID' ) );
 }
+
+/**
+ * Add custom fields to user profiles (for Staff page).
+ */
+function watermark_add_user_profile_fields( $user ) {
+	?>
+	<h3><?php _e( 'Staff Page Settings', 'watermark-theme' ); ?></h3>
+	<table class="form-table">
+		<tr>
+			<th><label for="show_on_staff_page"><?php _e( 'Show on Staff Page', 'watermark-theme' ); ?></label></th>
+			<td>
+				<input type="checkbox" name="show_on_staff_page" id="show_on_staff_page" value="1" <?php checked( get_user_meta( $user->ID, 'show_on_staff_page', true ), '1' ); ?> />
+				<p class="description"><?php _e( 'Check this to display this user on the Staff & Contributors page.', 'watermark-theme' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="job_title"><?php _e( 'Job Title', 'watermark-theme' ); ?></label></th>
+			<td>
+				<input type="text" name="job_title" id="job_title" value="<?php echo esc_attr( get_user_meta( $user->ID, 'job_title', true ) ); ?>" class="regular-text" />
+				<p class="description"><?php _e( 'Enter the job title to display on the Staff & Contributors page.', 'watermark-theme' ); ?></p>
+			</td>
+		</tr>
+	</table>
+	<?php
+}
+add_action( 'show_user_profile', 'watermark_add_user_profile_fields' );
+add_action( 'edit_user_profile', 'watermark_add_user_profile_fields' );
+
+/**
+ * Save custom user profile fields.
+ */
+function watermark_save_user_profile_fields( $user_id ) {
+	if ( ! current_user_can( 'edit_user', $user_id ) ) {
+		return false;
+	}
+
+	// Save show_on_staff_page checkbox
+	if ( isset( $_POST['show_on_staff_page'] ) ) {
+		update_user_meta( $user_id, 'show_on_staff_page', '1' );
+	} else {
+		update_user_meta( $user_id, 'show_on_staff_page', '0' );
+	}
+
+	// Save job_title
+	if ( isset( $_POST['job_title'] ) ) {
+		update_user_meta( $user_id, 'job_title', sanitize_text_field( $_POST['job_title'] ) );
+	}
+}
+add_action( 'personal_options_update', 'watermark_save_user_profile_fields' );
+add_action( 'edit_user_profile_update', 'watermark_save_user_profile_fields' );
+
+/**
+ * Add meta box to contributor CPT for staff page settings.
+ */
+function watermark_add_contributor_staff_meta_box() {
+	add_meta_box(
+		'watermark_contributor_staff_meta_box',
+		__( 'Staff Page Settings', 'watermark-theme' ),
+		'watermark_render_contributor_staff_meta_box',
+		'contributor',
+		'side',
+		'default'
+	);
+}
+add_action( 'add_meta_boxes', 'watermark_add_contributor_staff_meta_box' );
+
+/**
+ * Render the contributor staff page meta box.
+ */
+function watermark_render_contributor_staff_meta_box( $post ) {
+	wp_nonce_field( 'watermark_contributor_staff_meta_box', 'watermark_contributor_staff_meta_box_nonce' );
+
+	$show_on_staff = get_post_meta( $post->ID, 'show_on_staff_page', true );
+	$job_title = get_post_meta( $post->ID, 'job_title', true );
+	?>
+
+	<p>
+		<label>
+			<input type="checkbox" name="show_on_staff_page" value="1" <?php checked( $show_on_staff, '1' ); ?> />
+			<?php _e( 'Show on Staff & Contributors page', 'watermark-theme' ); ?>
+		</label>
+	</p>
+
+	<p>
+		<label for="job_title"><strong><?php _e( 'Job Title', 'watermark-theme' ); ?></strong></label><br>
+		<input type="text" name="job_title" id="job_title" value="<?php echo esc_attr( $job_title ); ?>" style="width: 100%;" />
+	</p>
+	<?php
+}
+
+/**
+ * Save contributor staff page meta box.
+ */
+function watermark_save_contributor_staff_meta_box( $post_id ) {
+	// Check nonce
+	if ( ! isset( $_POST['watermark_contributor_staff_meta_box_nonce'] ) ) {
+		return;
+	}
+	if ( ! wp_verify_nonce( $_POST['watermark_contributor_staff_meta_box_nonce'], 'watermark_contributor_staff_meta_box' ) ) {
+		return;
+	}
+
+	// Check autosave
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	// Check permissions
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	// Check post type
+	if ( get_post_type( $post_id ) !== 'contributor' ) {
+		return;
+	}
+
+	// Save show_on_staff_page
+	if ( isset( $_POST['show_on_staff_page'] ) ) {
+		update_post_meta( $post_id, 'show_on_staff_page', '1' );
+	} else {
+		update_post_meta( $post_id, 'show_on_staff_page', '0' );
+	}
+
+	// Save job_title
+	if ( isset( $_POST['job_title'] ) ) {
+		update_post_meta( $post_id, 'job_title', sanitize_text_field( $_POST['job_title'] ) );
+	}
+}
+add_action( 'save_post', 'watermark_save_contributor_staff_meta_box' );

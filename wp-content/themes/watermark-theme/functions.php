@@ -255,7 +255,7 @@ add_action( 'init', 'watermark_register_contributors_post_type' );
 function watermark_add_contributor_meta_box() {
 	add_meta_box(
 		'watermark_contributor_meta_box',
-		__( 'Article Contributor', 'watermark-theme' ),
+		__( 'Article Contributors', 'watermark-theme' ),
 		'watermark_render_contributor_meta_box',
 		'post',
 		'side',
@@ -270,7 +270,10 @@ add_action( 'add_meta_boxes', 'watermark_add_contributor_meta_box' );
 function watermark_render_contributor_meta_box( $post ) {
 	wp_nonce_field( 'watermark_contributor_meta_box', 'watermark_contributor_meta_box_nonce' );
 
-	$selected_contributor = get_post_meta( $post->ID, '_watermark_contributor_id', true );
+	$selected_contributors = get_post_meta( $post->ID, '_watermark_contributor_ids', true );
+	if ( ! is_array( $selected_contributors ) ) {
+		$selected_contributors = array();
+	}
 
 	$contributors = get_posts( array(
 		'post_type'      => 'contributor',
@@ -279,20 +282,25 @@ function watermark_render_contributor_meta_box( $post ) {
 		'order'          => 'ASC',
 	) );
 
-	echo '<p><label for="watermark_contributor_select">' . __( 'Override author with a contributor:', 'watermark-theme' ) . '</label></p>';
-	echo '<select id="watermark_contributor_select" name="watermark_contributor_id" style="width: 100%;">';
-	echo '<option value="">' . __( '-- Use Post Author --', 'watermark-theme' ) . '</option>';
+	echo '<p>' . __( 'Override author with contributors (select one or more):', 'watermark-theme' ) . '</p>';
+	echo '<div style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 8px; background: #fff;">';
 
-	foreach ( $contributors as $contributor ) {
-		printf(
-			'<option value="%s" %s>%s</option>',
-			esc_attr( $contributor->ID ),
-			selected( $selected_contributor, $contributor->ID, false ),
-			esc_html( $contributor->post_title )
-		);
+	if ( ! empty( $contributors ) ) {
+		foreach ( $contributors as $contributor ) {
+			$checked = in_array( $contributor->ID, $selected_contributors ) ? 'checked' : '';
+			printf(
+				'<label style="display: block; margin-bottom: 8px;"><input type="checkbox" name="watermark_contributor_ids[]" value="%s" %s> %s</label>',
+				esc_attr( $contributor->ID ),
+				$checked,
+				esc_html( $contributor->post_title )
+			);
+		}
+	} else {
+		echo '<p><em>' . __( 'No contributors found. Create contributors first.', 'watermark-theme' ) . '</em></p>';
 	}
 
-	echo '</select>';
+	echo '</div>';
+	echo '<p style="margin-top: 10px;"><small>' . __( 'Leave unchecked to use the post author.', 'watermark-theme' ) . '</small></p>';
 }
 
 /**
@@ -317,49 +325,69 @@ function watermark_save_contributor_meta_box( $post_id ) {
 		return;
 	}
 
-	// Save the contributor ID.
-	if ( isset( $_POST['watermark_contributor_id'] ) ) {
-		$contributor_id = sanitize_text_field( $_POST['watermark_contributor_id'] );
-		if ( ! empty( $contributor_id ) ) {
-			update_post_meta( $post_id, '_watermark_contributor_id', $contributor_id );
-		} else {
-			delete_post_meta( $post_id, '_watermark_contributor_id' );
-		}
+	// Save the contributor IDs.
+	if ( isset( $_POST['watermark_contributor_ids'] ) && is_array( $_POST['watermark_contributor_ids'] ) ) {
+		$contributor_ids = array_map( 'intval', $_POST['watermark_contributor_ids'] );
+		update_post_meta( $post_id, '_watermark_contributor_ids', $contributor_ids );
+	} else {
+		delete_post_meta( $post_id, '_watermark_contributor_ids' );
 	}
 }
 add_action( 'save_post', 'watermark_save_contributor_meta_box' );
 
 /**
- * Get the contributor for a post.
+ * Get the contributors for a post.
  *
  * @param int $post_id Post ID. Default is current post.
- * @return WP_Post|false Contributor post object or false if none set.
+ * @return array|false Array of contributor post objects or false if none set.
  */
-function watermark_get_post_contributor( $post_id = null ) {
+function watermark_get_post_contributors( $post_id = null ) {
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
 
-	$contributor_id = get_post_meta( $post_id, '_watermark_contributor_id', true );
+	$contributor_ids = get_post_meta( $post_id, '_watermark_contributor_ids', true );
 
-	if ( $contributor_id ) {
-		return get_post( $contributor_id );
+	if ( ! empty( $contributor_ids ) && is_array( $contributor_ids ) ) {
+		$contributors = array();
+		foreach ( $contributor_ids as $contributor_id ) {
+			$contributor = get_post( $contributor_id );
+			if ( $contributor && $contributor->post_status === 'publish' ) {
+				$contributors[] = $contributor;
+			}
+		}
+		return ! empty( $contributors ) ? $contributors : false;
 	}
 
 	return false;
 }
 
 /**
- * Display the contributor or author name.
+ * Get the contributor for a post (backwards compatibility - returns first contributor).
  *
  * @param int $post_id Post ID. Default is current post.
- * @return string Contributor or author name.
+ * @return WP_Post|false Contributor post object or false if none set.
+ */
+function watermark_get_post_contributor( $post_id = null ) {
+	$contributors = watermark_get_post_contributors( $post_id );
+	return $contributors ? $contributors[0] : false;
+}
+
+/**
+ * Display the contributor(s) or author name.
+ *
+ * @param int $post_id Post ID. Default is current post.
+ * @return string Contributor(s) or author name.
  */
 function watermark_get_author_name( $post_id = null ) {
-	$contributor = watermark_get_post_contributor( $post_id );
+	$contributors = watermark_get_post_contributors( $post_id );
 
-	if ( $contributor ) {
-		return $contributor->post_title;
+	if ( $contributors ) {
+		$names = array();
+		foreach ( $contributors as $contributor ) {
+			$names[] = $contributor->post_title;
+		}
+		return implode( ', ', $names );
 	}
 
 	return get_the_author();

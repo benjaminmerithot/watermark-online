@@ -15,10 +15,12 @@ The Contributors feature allows you to attribute articles to people who are not 
 4. Click **Publish**
 
 ### Assigning Contributors to Posts
-1. When editing a post, look for the **Article Contributor** meta box in the sidebar
-2. Select a contributor from the dropdown menu
-3. If you select a contributor, they will override the post author
-4. Leave it set to "-- Use Post Author --" to use the default WordPress author
+1. When editing a post, look for the **Article Contributors** meta box in the sidebar
+2. Check one or more contributors from the checkbox list
+3. You can select multiple contributors for a single article
+4. If you select contributor(s), they will override the post author
+5. Leave all unchecked to use the default WordPress author
+6. Contributors will be displayed with links to their individual archive pages, separated by commas (e.g., "By John Smith, Jane Doe")
 
 ### Viewing Contributors
 - **Single Contributor Page**: `https://yoursite.com/contributor/contributor-name/`
@@ -64,9 +66,10 @@ The Contributors feature includes these template files:
 - `single-contributor.php` - Individual contributor page
 - `archive-contributor.php` - Contributor archive (shows when viewing a contributor)
 - Helper functions in `functions.php`:
-  - `watermark_get_post_contributor()` - Get contributor for a post
-  - `watermark_get_author_name()` - Get contributor or author name
-  - `watermark_get_author_link()` - Get contributor or author link
+  - `watermark_get_post_contributors()` - Get all contributors for a post (returns array)
+  - `watermark_get_post_contributor()` - Get first contributor for a post (backwards compatibility)
+  - `watermark_get_author_name()` - Get contributor(s) or author name (comma-separated if multiple)
+  - `watermark_get_author_link()` - Get first contributor or author link
 
 ## Permalink Structure
 
@@ -85,8 +88,9 @@ When displaying post author information, the system checks in this order:
 ## Technical Details
 
 - Custom post type slug: `contributor`
-- Meta key for post-contributor relationship: `_watermark_contributor_id`
+- Meta key for post-contributors relationship: `_watermark_contributor_ids` (stores array of contributor IDs)
 - Supports: title, editor, thumbnail
 - Public: Yes
 - Has archive: Yes
 - Show in REST API: Yes (for Gutenberg support)
+- Multiple contributors: Yes (supports 1 or more contributors per article)

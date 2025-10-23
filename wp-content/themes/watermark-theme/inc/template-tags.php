@@ -64,16 +64,22 @@ if ( ! function_exists( 'watermark_print_post_author' ) ) :
 		// Parse args.
 		$args = wp_parse_args( $args, $defaults );
 
-		// Check for contributor first.
-		$contributor = watermark_get_post_contributor();
+		// Check for contributors first.
+		$contributors = watermark_get_post_contributors();
 		$custom_author = get_post_meta( get_the_ID(), 'author', true ) ?: null;
 
 		?>
 		<span class="post-author">
 			<?php echo esc_html( $args['author_text'] . ' ' ); ?>
 			<span class="author vcard">
-				<?php if ( $contributor ) : ?>
-					<a class="url fn n" href="<?php echo esc_url( get_permalink( $contributor->ID ) ); ?>"><?php echo esc_html( $contributor->post_title ); ?></a>
+				<?php if ( $contributors ) : ?>
+					<?php
+					$contributor_links = array();
+					foreach ( $contributors as $contributor ) {
+						$contributor_links[] = '<a class="url fn n" href="' . esc_url( get_permalink( $contributor->ID ) ) . '">' . esc_html( $contributor->post_title ) . '</a>';
+					}
+					echo implode( ', ', $contributor_links );
+					?>
 				<?php elseif ( $custom_author ) : ?>
 					<?php echo esc_html( $custom_author ); ?>
 				<?php else : ?>

@@ -50,8 +50,9 @@ get_header(); ?>
 								'paged'          => get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1,
 								'meta_query'     => array(
 									array(
-										'key'   => '_watermark_contributor_id',
-										'value' => $contributor_id,
+										'key'     => '_watermark_contributor_ids',
+										'value'   => sprintf( ':"%s";', $contributor_id ),
+										'compare' => 'LIKE',
 									),
 								),
 							) );
